@@ -67,23 +67,37 @@
                       }
                     },
                     "properties": {
-                      "darwin": {"description": "macOS"},
-                      "linux": {"description": "Linux"},
-                      "win32": {"description": "Windows"},
+                      "darwin": {
+                        "description": "macOS"
+                      },
+                      "linux": {
+                        "description": "Linux"
+                      },
+                      "win32": {
+                        "description": "Windows"
+                      },
                       "aix": {},
                       "freebsd": {},
                       "openbsd": {},
                       "sunos": {},
                       "android": {},
-                      "*": {"description": "All platforms that don't have a more specific command set"}
+                      "*": {
+                        "description": "All platforms that don't have a more specific command set"
+                      }
                     }
                   }
                 ],
                 "examples": [
-                  [""],
+                  [
+                    ""
+                  ],
                   {
-                    "win32": [""],
-                    "*": [""]
+                    "win32": [
+                      ""
+                    ],
+                    "*": [
+                      ""
+                    ]
                   }
                 ],
                 "description": "The shell command to run. Should accept the code's text through STDIN and output the formatted result through STDOUT. If an object is passed, the command matching the current platform or otherwise \"*\" is picked."
@@ -103,17 +117,70 @@
                   "type": "string",
                   "minLength": 1,
                   "examples": [
-                    "", "abap", "bat", "bibtex", "clojure", "coffeescript", "c",
-                    "cpp", "csharp", "d", "dockercompose", "css", "cuda-cpp",
-                    "diff", "dockerfile", "fsharp", "git-commit", "git-rebase",
-                    "go", "groovy", "handlebars", "haml", "html", "ini", "java",
-                    "javascript", "javascriptreact", "json", "jsonc", "latex",
-                    "less", "lua", "makefile", "markdown", "objective-c",
-                    "objective-cpp", "perl", "php", "plaintext", "powershell",
-                    "jade", "pug", "python", "r", "razor", "ruby", "rust",
-                    "scss", "sass", "shaderlab", "shellscript", "slim", "sql",
-                    "stylus", "swift", "typescript", "typescriptreact", "tex",
-                    "vb", "vue", "vue-html", "xml", "xsl", "yaml"
+                    "",
+                    "abap",
+                    "bat",
+                    "bibtex",
+                    "clojure",
+                    "coffeescript",
+                    "c",
+                    "cpp",
+                    "csharp",
+                    "d",
+                    "dockercompose",
+                    "css",
+                    "cuda-cpp",
+                    "diff",
+                    "dockerfile",
+                    "fsharp",
+                    "git-commit",
+                    "git-rebase",
+                    "go",
+                    "groovy",
+                    "handlebars",
+                    "haml",
+                    "html",
+                    "ini",
+                    "java",
+                    "javascript",
+                    "javascriptreact",
+                    "json",
+                    "jsonc",
+                    "latex",
+                    "less",
+                    "lua",
+                    "makefile",
+                    "markdown",
+                    "objective-c",
+                    "objective-cpp",
+                    "perl",
+                    "php",
+                    "plaintext",
+                    "powershell",
+                    "jade",
+                    "pug",
+                    "python",
+                    "r",
+                    "razor",
+                    "ruby",
+                    "rust",
+                    "scss",
+                    "sass",
+                    "shaderlab",
+                    "shellscript",
+                    "slim",
+                    "sql",
+                    "stylus",
+                    "swift",
+                    "typescript",
+                    "typescriptreact",
+                    "tex",
+                    "vb",
+                    "vue",
+                    "vue-html",
+                    "xml",
+                    "xsl",
+                    "yaml"
                   ]
                 },
                 "minItems": 1
@@ -137,17 +204,17 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/glob": "^7.1.4",
-    "@types/mocha": "^7.0.2",
-    "@types/node": "^13.11.0",
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^13.13.52",
     "@types/vscode": "^1.45.0",
-    "@typescript-eslint/eslint-plugin": "^4.32.0",
-    "@typescript-eslint/parser": "^4.32.0",
-    "eslint": "^7.32.0",
-    "glob": "^7.2.0",
-    "mocha": "^9.1.2",
-    "typescript": "^4.4.3",
-    "vsce": "^1.100.0",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "eslint": "^8.54.0",
+    "glob": "^7.2.3",
+    "mocha": "^9.2.2",
+    "typescript": "^4.9.5",
+    "vsce": "^2.15.0",
     "vscode-test": "^1.6.1"
   }
 }

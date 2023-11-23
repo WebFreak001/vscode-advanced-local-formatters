@@ -6,6 +6,7 @@ Lets users add formatters to VSCode that run locally defined scripts.
 
 This is a fork of JKillian's custom local formatters extension. This fork has the following differences:
 
+- published to OpenVSX directly
 - range formatting / "Format Selection" is supported automatically
 - you can specify the working directory for the command
 - the command is specified as string array, so you don't have to escape arguments yourself

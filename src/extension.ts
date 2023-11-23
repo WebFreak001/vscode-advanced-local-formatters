@@ -88,7 +88,7 @@ const registerFormatters = (
               outputChannel.append(data);
             });
             process.on('close', (code) => {
-              if (code != 0)
+              if (code !== 0)
                 reject("Formatter failed with code " + code + ", see output tab for more details");
               else
                 resolve(makeEdits());
@@ -112,7 +112,7 @@ export function deactivate() { }
 // taken from https://github.com/Pure-D/serve-d/blob/ac0b6c3201cb2ba6fcaa7b3301214c5475f025c4/source/served/commands/format.d#L195
 function diff(document: vscode.TextDocument, after: string): vscode.TextEdit[] {
   function isWhite(c: string) {
-    return c.length == 1 && (c[0] == ' ' || (c.charCodeAt(0) >= 0x09 && c.charCodeAt(0) <= 0x0D))
+    return c.length === 1 && (c[0] === ' ' || (c.charCodeAt(0) >= 0x09 && c.charCodeAt(0) <= 0x0D));
   }
 
   let before = document.getText();
@@ -125,7 +125,7 @@ function diff(document: vscode.TextDocument, after: string): vscode.TextEdit[] {
   let text = "";
 
   function pushTextEdit(): boolean {
-    if (startIndex != stopIndex || text.length > 0) {
+    if (startIndex !== stopIndex || text.length > 0) {
       let startPosition = document.positionAt(startIndex);
       let stopPosition = document.positionAt(stopIndex);
       result.push({
@@ -154,7 +154,7 @@ function diff(document: vscode.TextDocument, after: string): vscode.TextEdit[] {
       newJ += afterChar.length;
     }
 
-    if (i < before.length && j < after.length && beforeChar == afterChar) {
+    if (i < before.length && j < after.length && beforeChar === afterChar) {
       i = newI;
       j = newJ;
 
@@ -164,7 +164,7 @@ function diff(document: vscode.TextDocument, after: string): vscode.TextEdit[] {
       }
     }
 
-    if (startIndex == stopIndex) {
+    if (startIndex === stopIndex) {
       startIndex = i;
       stopIndex = i;
     }

@@ -4,7 +4,14 @@ All notable changes to the "custom-local-formatters" extension will be documente
 
 Format based off of [Keep a Changelog](http://keepachangelog.com/).
 
-## [Unreleased]
+## v0.1.0 - 2023-11-23
+
+- forked off original JKillian Custom Local Formatters into WebFreak's Custom Local Formatters+
+- published to OpenVSX directly
+- range formatting / "Format Selection" is supported automatically
+- you can specify the working directory for the command
+- the command is specified as string array, so you don't have to escape arguments yourself
+- you can specify commands only matching certain platforms, so you can distribute workspace settings with your project for all operating systems
 
 ## v0.0.6 - 2021-09-27
 

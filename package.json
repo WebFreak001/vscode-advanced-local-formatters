@@ -1,11 +1,11 @@
 {
   "name": "custom-local-formatters",
-  "displayName": "Custom Local Formatters",
-  "description": "Allows users to register custom local formatters for any language.",
-  "publisher": "jkillian",
-  "version": "0.0.6",
+  "displayName": "Custom Local Formatters+",
+  "description": "fork of custom-local-formatters: format selection, specify cwd, platform specific commands",
+  "publisher": "webfreak",
+  "version": "0.1.0",
   "repository": {
-    "url": "https://github.com/JKillian/vscode-custom-local-formatters"
+    "url": "https://github.com/WebFreak001/vscode-custom-local-formatters"
   },
   "license": "MIT",
   "engines": {
@@ -43,33 +43,47 @@
             "description": "A single custom formatter.",
             "properties": {
               "command": {
+                "$comment": "definitions / $ref doesn't seem to work in configuration sadly, otherwise would need to use it on all the properties below",
                 "oneOf": [
                   {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "examples": [
+                        "",
+                        "$absoluteFilePath",
+                        "$relativeFilePath",
+                        "$insertSpaces",
+                        "$tabSize"
+                      ]
+                    }
                   },
                   {
                     "type": "object",
                     "additionalProperties": {
-                      "type": "string"
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
                     },
                     "properties": {
-                      "darwin": {"type": "string", "description": "macOS"},
-                      "linux": {"type": "string", "description": "Linux"},
-                      "win32": {"type": "string", "description": "Windows"},
-                      "aix": {"type": "string"},
-                      "freebsd": {"type": "string"},
-                      "openbsd": {"type": "string"},
-                      "sunos": {"type": "string"},
-                      "android": {"type": "string"},
-                      "*": {"type": "string"}
+                      "darwin": {"description": "macOS"},
+                      "linux": {"description": "Linux"},
+                      "win32": {"description": "Windows"},
+                      "aix": {},
+                      "freebsd": {},
+                      "openbsd": {},
+                      "sunos": {},
+                      "android": {},
+                      "*": {"description": "All platforms that don't have a more specific command set"}
                     }
                   }
                 ],
                 "examples": [
-                  "",
+                  [""],
                   {
-                    "win32": "",
-                    "*": ""
+                    "win32": [""],
+                    "*": [""]
                   }
                 ],
                 "description": "The shell command to run. Should accept the code's text through STDIN and output the formatted result through STDOUT. If an object is passed, the command matching the current platform or otherwise \"*\" is picked."
@@ -77,6 +91,10 @@
               "disabled": {
                 "type": "boolean",
                 "default": false
+              },
+              "cwd": {
+                "type": "string",
+                "description": "The working directory for the command, either relative to the workspace folder or absolute."
               },
               "languages": {
                 "type": "array",

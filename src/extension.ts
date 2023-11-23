@@ -1,8 +1,9 @@
-import { exec } from 'child_process';
+import { spawn } from 'child_process';
 
 import * as vscode from 'vscode';
 
 import { Config, FormatterConfig } from './types';
+import path = require('path');
 
 export function activate(context: vscode.ExtensionContext) {
   const outputChannel = vscode.window.createOutputChannel('Custom Local Formatters');
@@ -35,8 +36,8 @@ const registerFormatters = (
         return;
       }
 
-      let commandTemplate: string;
-      if (typeof formatter.command == "string") {
+      let commandTemplate: string[];
+      if (Array.isArray(formatter.command)) {
         commandTemplate = formatter.command;
       } else {
         let platformCommand = formatter.command[process.platform];
@@ -51,46 +52,53 @@ const registerFormatters = (
         return;
       }
 
-      return vscode.languages.registerDocumentFormattingEditProvider(formatter.languages, {
-        provideDocumentFormattingEdits(document, options) {
-          let command = commandTemplate
-            .replace(/\${file}/g, document.fileName)
-            .replace(/\${insertSpaces}/g, '' + options.insertSpaces)
-            .replace(/\${tabSize}/g, '' + options.tabSize);
-
+      return vscode.languages.registerDocumentRangeFormattingEditProvider(formatter.languages, {
+        provideDocumentRangeFormattingEdits(document, range, options) {
           const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
           const backupFolder = vscode.workspace.workspaceFolders?.[0];
-          const cwd = workspaceFolder?.uri?.fsPath || backupFolder?.uri.fsPath;
+          let cwd = workspaceFolder?.uri?.fsPath || backupFolder?.uri.fsPath;
+          if (formatter.cwd)
+            cwd = cwd ? path.resolve(cwd, formatter.cwd) : formatter.cwd;
 
-          return new Promise<vscode.TextEdit[]>((resolve, reject) => {
-            outputChannel.appendLine(`Starting formatter: ${command}`);
-            const originalDocumentText = document.getText();
-
-            const process = exec(command, { cwd }, (error, stdout, stderr) => {
-              if (error) {
-                outputChannel.appendLine(`Formatter failed: ${command}\nStderr:\n${stderr}`);
-                reject(error);
+          let command = commandTemplate
+            .map(function (arg: string): string {
+              switch (arg) {
+                case "$absoluteFilePath": return document.fileName;
+                case "$relativeFilePath": return cwd ? path.relative(cwd, document.fileName) : document.fileName;
+                case "$insertSpaces": return options.insertSpaces ? "true" : "false";
+                case "$tabSize": return options.tabSize + "";
+                default: return arg;
               }
-
-              if (originalDocumentText.length > 0 && stdout.length === 0) {
-                outputChannel.appendLine(`Formatter returned nothing - not applying changes.`);
-                resolve([]);
-              }
-
-              const documentRange = new vscode.Range(
-                document.lineAt(0).range.start,
-                document.lineAt(document.lineCount - 1).rangeIncludingLineBreak.end,
-              );
-
-              outputChannel.appendLine(`Finished running formatter: ${command}`);
-              if (stderr.length > 0)
-                outputChannel.appendLine(`Possible issues ocurred:\n${stderr}`);
-
-              resolve([new vscode.TextEdit(documentRange, stdout)]);
             });
 
-            process.stdin?.write(originalDocumentText);
-            process.stdin?.end();
+          return new Promise<vscode.TextEdit[]>((resolve, reject) => {
+            outputChannel.appendLine(`Starting formatter: ${JSON.stringify(command)}`);
+            const originalDocumentText = document.getText();
+            let newText = "";
+
+            function makeEdits(): vscode.TextEdit[] {
+              return diff(document, newText).filter(a => range.intersection(a.range));
+            }
+
+            const process = spawn(command[0], command.slice(1), { cwd });
+            process.stdout.on('data', (data) => {
+              newText += data;
+            });
+            process.stderr.on('data', (data) => {
+              outputChannel.append(data);
+            });
+            process.on('close', (code) => {
+              if (code != 0)
+                reject("Formatter failed with code " + code + ", see output tab for more details");
+              else
+                resolve(makeEdits());
+            });
+            process.on('error', (err) => {
+              reject("Failed starting formatter: " + err);
+            });
+
+            process.stdin.write(originalDocumentText);
+            process.stdin.end();
           });
         },
       });
@@ -99,4 +107,85 @@ const registerFormatters = (
 };
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
+
+// taken from https://github.com/Pure-D/serve-d/blob/ac0b6c3201cb2ba6fcaa7b3301214c5475f025c4/source/served/commands/format.d#L195
+function diff(document: vscode.TextDocument, after: string): vscode.TextEdit[] {
+  function isWhite(c: string) {
+    return c.length == 1 && (c[0] == ' ' || (c.charCodeAt(0) >= 0x09 && c.charCodeAt(0) <= 0x0D))
+  }
+
+  let before = document.getText();
+  let i = 0;
+  let j = 0;
+  let result: vscode.TextEdit[] = [];
+
+  let startIndex = 0;
+  let stopIndex = 0;
+  let text = "";
+
+  function pushTextEdit(): boolean {
+    if (startIndex != stopIndex || text.length > 0) {
+      let startPosition = document.positionAt(startIndex);
+      let stopPosition = document.positionAt(stopIndex);
+      result.push({
+        newText: text,
+        range: new vscode.Range(startPosition, stopPosition)
+      });
+      return true;
+    }
+
+    return false;
+  }
+
+  while (i < before.length || j < after.length) {
+    let newI = i;
+    let newJ = j;
+    let beforeChar = '';
+    let afterChar = '';
+
+    if (newI < before.length) {
+      beforeChar = before.charAt(newI);
+      newI += beforeChar.length;
+    }
+
+    if (newJ < after.length) {
+      afterChar = after.charAt(newJ);
+      newJ += afterChar.length;
+    }
+
+    if (i < before.length && j < after.length && beforeChar == afterChar) {
+      i = newI;
+      j = newJ;
+
+      if (pushTextEdit()) {
+        startIndex = stopIndex;
+        text = "";
+      }
+    }
+
+    if (startIndex == stopIndex) {
+      startIndex = i;
+      stopIndex = i;
+    }
+
+    let addition = !isWhite(beforeChar) && isWhite(afterChar);
+    const deletion = isWhite(beforeChar) && !isWhite(afterChar);
+
+    if (!addition && !deletion) {
+      addition = before.length - i < after.length - j;
+    }
+
+    if (addition && j < after.length) {
+      text += after.substring(j, newJ);
+      j = newJ;
+    }
+    else if (i < before.length) {
+      stopIndex = newI;
+      i = newI;
+    }
+  }
+
+  pushTextEdit();
+  return result;
+}

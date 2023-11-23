@@ -1,11 +1,11 @@
 {
-  "name": "custom-local-formatters",
-  "displayName": "Custom Local Formatters+",
+  "name": "advanced-local-formatters",
+  "displayName": "Advanced Local Formatters",
   "description": "fork of custom-local-formatters: format selection, specify cwd, platform specific commands",
   "publisher": "webfreak",
   "version": "0.1.0",
   "repository": {
-    "url": "https://github.com/WebFreak001/vscode-custom-local-formatters"
+    "url": "https://github.com/WebFreak001/vscode-advanced-local-formatters"
   },
   "license": "MIT",
   "engines": {
@@ -32,9 +32,9 @@
   ],
   "contributes": {
     "configuration": {
-      "title": "Custom Local Formatters",
+      "title": "Advanced Local Formatters",
       "properties": {
-        "customLocalFormatters.formatters": {
+        "advancedLocalFormatters.formatters": {
           "type": "array",
           "description": "Array of custom formatters",
           "default": [],

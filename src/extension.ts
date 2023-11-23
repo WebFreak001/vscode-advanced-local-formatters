@@ -6,11 +6,11 @@ import { Config, FormatterConfig } from './types';
 import path = require('path');
 
 export function activate(context: vscode.ExtensionContext) {
-  const outputChannel = vscode.window.createOutputChannel('Custom Local Formatters');
+  const outputChannel = vscode.window.createOutputChannel('Advanced Local Formatters');
   let disposables: readonly vscode.Disposable[] = [];
 
   vscode.workspace.onDidChangeConfiguration((e) => {
-    if (!e.affectsConfiguration('customLocalFormatters')) return;
+    if (!e.affectsConfiguration('advancedLocalFormatters')) return;
     disposables.forEach((d) => d.dispose());
     disposables = registerFormatters(getFormatterConfigs(), outputChannel);
   });
@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 const getFormatterConfigs = () => {
-  const config = vscode.workspace.getConfiguration('customLocalFormatters');
+  const config = vscode.workspace.getConfiguration('advancedLocalFormatters');
   return config.get<Config['formatters']>('formatters', []);
 };
 

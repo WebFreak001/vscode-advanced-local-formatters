@@ -1,4 +1,4 @@
-# VSCode Custom Local Formatters+
+# VSCode Advanced Local Formatters
 
 Lets users add formatters to VSCode that run locally defined scripts.
 
@@ -27,7 +27,7 @@ Here's an example of a custom python script that sorts imports and reformats cod
 
 
 ## Quickstart
-0. Install this extension through the VSCode extensions panel or [VSCode extensions marketplace](https://marketplace.visualstudio.com/items?itemName=webfreak.custom-local-formatters).
+0. Install this extension through the VSCode extensions panel or [VSCode extensions marketplace](https://marketplace.visualstudio.com/items?itemName=webfreak.advanced-local-formatters).
 
 1. Define your custom formatting script.
    Scripts will receive the contents of the file to be formatted over STDIN.
@@ -38,7 +38,7 @@ Here's an example of a custom python script that sorts imports and reformats cod
    Valid language identifiers [can be found here](https://code.visualstudio.com/docs/languages/identifiers) and will be auto-completed.
 
    ```json
-     "customLocalFormatters.formatters": [
+     "advancedLocalFormatters.formatters": [
        {
          "command": ["python", "format-yml-files.py"],
          "languages": ["yml"]
@@ -57,4 +57,4 @@ Full extension configuration schema and documentation can be found in the [`pack
 
 VSCode doesn't seem to provide a way to name the formatter which an extension creates.
 This means that if you register multiple formatters for the same language,
-they will unfortunately both show up as 'Custom Local Formatters' and it will be difficult to tell them apart.
+they will unfortunately both show up as 'Advanced Local Formatters' and it will be difficult to tell them apart.

@@ -6,7 +6,7 @@ Format based off of [Keep a Changelog](http://keepachangelog.com/).
 
 ## 0.1.0 - 2023-11-23
 
-- forked off original JKillian Custom Local Formatters into WebFreak's Custom Local Formatters+
+- forked off original JKillian Custom Local Formatters into Advanced Local Formatters
 - published to OpenVSX directly
 - range formatting / "Format Selection" is supported automatically
 - you can specify the working directory for the command

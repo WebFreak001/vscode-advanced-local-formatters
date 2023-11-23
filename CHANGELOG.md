@@ -4,6 +4,11 @@ All notable changes to the "custom-local-formatters" extension will be documente
 
 Format based off of [Keep a Changelog](http://keepachangelog.com/).
 
+## 0.1.1 - 2023-11-23
+
+- added OpenVSX link to README
+- changed theme color on marketplaces
+
 ## 0.1.0 - 2023-11-23
 
 - forked off original JKillian Custom Local Formatters into Advanced Local Formatters

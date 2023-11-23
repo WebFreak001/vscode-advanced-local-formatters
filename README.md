@@ -27,7 +27,7 @@ Here's an example of a custom python script that sorts imports and reformats cod
 
 
 ## Quickstart
-0. Install this extension through the VSCode extensions panel or [VSCode extensions marketplace](https://marketplace.visualstudio.com/items?itemName=webfreak.advanced-local-formatters).
+0. Install this extension through the VSCode extensions panel or [VSCode extensions marketplace](https://marketplace.visualstudio.com/items?itemName=webfreak.advanced-local-formatters) or [OpenVSX marketplace](https://open-vsx.org/extension/webfreak/advanced-local-formatters).
 
 1. Define your custom formatting script.
    Scripts will receive the contents of the file to be formatted over STDIN.

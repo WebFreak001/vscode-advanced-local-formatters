@@ -23,7 +23,7 @@
   ],
   "icon": "images/logo.png",
   "galleryBanner": {
-    "color": "#83E4C6",
+    "color": "#42a5f5",
     "theme": "light"
   },
   "main": "./out/extension.js",

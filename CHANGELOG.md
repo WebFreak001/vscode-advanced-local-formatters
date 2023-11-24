@@ -4,7 +4,7 @@ All notable changes to the "custom-local-formatters" extension will be documente
 
 Format based off of [Keep a Changelog](http://keepachangelog.com/).
 
-## [Unreleased]
+## 0.1.2 - 2023-11-24
 
 - fixed command stderr output in output panel
 - always reject format output if it's completely empty

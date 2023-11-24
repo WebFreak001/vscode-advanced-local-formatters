@@ -85,11 +85,13 @@ const registerFormatters = (
               newText += data;
             });
             process.stderr.on('data', (data) => {
-              outputChannel.append(data);
+              outputChannel.append("" + data);
             });
             process.on('close', (code) => {
               if (code !== 0)
-                reject("Formatter failed with code " + code + ", see output tab for more details");
+                reject("Formatter failed with code " + code + ", see output tab for command output");
+              else if (newText.trim() === "")
+                reject("Format result is empty, see output tab for command output");
               else
                 resolve(makeEdits());
             });

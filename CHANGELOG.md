@@ -4,6 +4,11 @@ All notable changes to the "custom-local-formatters" extension will be documente
 
 Format based off of [Keep a Changelog](http://keepachangelog.com/).
 
+## [Unreleased]
+
+- fixed command stderr output in output panel
+- always reject format output if it's completely empty
+
 ## 0.1.1 - 2023-11-23
 
 - added OpenVSX link to README
